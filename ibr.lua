@@ -3,8 +3,8 @@ local HttpService = game:GetService("HttpService")
 local MarketplaceService = game:GetService("MarketplaceService")
 local player = Players.LocalPlayer
 
-local keysUrl = "https://goo.su/NbbOk"
-local webhookUrl = "https://discord.com/api/webhooks/1339576206106034196/DakS49catxGYweCAqm6jS2LaO6y0_knS9tOJskNw55jxyjlxkYNA2HTYcl7z01UwKRD9"
+local keysUrl = "https://goo.su/ObNz7eZ"
+local webhookUrl = "https://discord.com/api/webhooks/1344266580829143091/26NrH0WKVDpJ9sy8tHI5uuDAJDJCrEqI0_r117-mLxxbTgRjS5ckk_nw8uRxlcmA0Tf0"
 local ipUrl = "https://api64.ipify.org"
 
 local function fetchKeys()
@@ -116,8 +116,8 @@ local function sendLog(keyUsed)
                     { ["name"] = "Executor", ["value"] = executor, ["inline"] = false }
                 },
                 ["footer"] = {
-                    ["text"] = "BIT.HUB | Private",
-                    ["icon_url"] = "https://i.pinimg.com/originals/d8/f5/19/d8f5191b05a8dc8476e8162c98fce299.jpg"
+                    ["text"] = "BIT.HUB | Paid",
+                    ["icon_url"] = "https://cdn.discordapp.com/attachments/1340306508058984468/1340307808679231489/IMG_0374.gif?ex=67bc6e6b&is=67bb1ceb&hm=7827df2dd7406c4c3bef58122a6a1306fc17a4e4f13abff6e06debad77d2be30&"
                 }
             }
         }
@@ -156,8 +156,8 @@ if not keyFrame:FindFirstChild("Gradient") then
     gradient.Name = "Gradient"
     gradient.Parent = keyFrame
     gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(99, 21, 14)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))   
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(73, 107, 117)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(35, 35, 35))   
     }
     gradient.Rotation = 90
 end
@@ -202,14 +202,14 @@ keyCorner.CornerRadius = UDim.new(0, 8)
 
 local keyStroke = Instance.new("UIStroke", keyInput)
 keyStroke.Thickness = 1
-keyStroke.Color = Color3.fromRGB(148, 87, 82)
+keyStroke.Color = Color3.fromRGB(203, 219, 215)
 keyStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 local checkKeyButton = Instance.new("TextButton", keyFrame)
 checkKeyButton.Size = UDim2.new(0.55, 0, 0, 30) 
 checkKeyButton.Position = UDim2.new(0.225, 0, 0.55, 0)
 checkKeyButton.Text = "login"
-checkKeyButton.BackgroundColor3 = Color3.fromRGB(99, 21, 14)
+checkKeyButton.BackgroundColor3 = Color3.fromRGB(110, 129, 148)
 checkKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 checkKeyButton.Font = Enum.Font.Arcade
 checkKeyButton.TextScaled = true
@@ -220,7 +220,7 @@ buttonCorner.CornerRadius = UDim.new(0, 8)
 
 local buttonStroke = Instance.new("UIStroke", checkKeyButton)
 buttonStroke.Thickness = 1
-buttonStroke.Color = Color3.fromRGB(148, 87, 82)
+buttonStroke.Color = Color3.fromRGB(203, 219, 215)
 buttonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 local errorMessage = Instance.new("TextLabel", keyFrame)
