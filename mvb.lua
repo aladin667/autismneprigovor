@@ -831,7 +831,7 @@ local fpsBoostEnabled = false
 createCheckbox(section1Content, "FPS Boost", false, function(value)
     fpsBoostEnabled = value
     if value then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/tamerlan806/bit.hub/refs/heads/main/main/fpsboost.lua", true))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/aladin667/phtlox/refs/heads/main/fps.lua", true))()
     end
 end)
 
@@ -839,7 +839,7 @@ local potatoEnabled = false
 createCheckbox(section1Content, "Potato", false, function(value)
     potatoEnabled = value
     if value then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/tamerlan806/bit.hub/refs/heads/main/main/potato.lua", true))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/aladin667/phtlox/refs/heads/main/patata.lua", true))()
     end
 end)
 
