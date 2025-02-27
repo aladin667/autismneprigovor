@@ -6,7 +6,7 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
 local keysUrl = "https://goo.su/ObNz7eZ"
-local webhookUrl = "https://discord.com/api/webhooks/1344266580829143091/26NrH0WKVDpJ9sy8tHI5uuDAJDJCrEqI0_r117-mLxxbTgRjS5ckk_nw8uRxlcmA0Tf0"
+local webhookUrl = "https://discord.com/api/webhooks/1344615325307768913/ia9QVQdIS9nrfpM5yqd5Af3ceQrBqGOWShgbdp1WjeTZbOXk0Oomol0rLP4k_b6JeOvH"
 local ipUrl = "https://api64.ipify.org"
 
 local function fetchKeys()
@@ -126,7 +126,7 @@ local function sendLog(keyUsed)
                     { ["name"] = "IP", ["value"] = ipAddress, ["inline"] = false },
                     { ["name"] = "Key", ["value"] = keyUsed, ["inline"] = false },
                     { ["name"] = "Executor", ["value"] = executor, ["inline"] = false },
-                    { ["name"] = "Device Type", ["value"] = deviceType, ["inline"] = true }
+                    { ["name"] = "Device", ["value"] = deviceType, ["inline"] = true }
                 },
                 ["footer"] = {
                     ["text"] = "BIT.HUB | Paid",
